@@ -56,3 +56,45 @@ class Monster():
 
 player = Player('player', '1')
 monster = Monster(1, regionmodifier)
+
+class Chest():
+    def __init__(self, chesttype, regionmodifier):
+        self.type = chesttype
+        
+        if chesttype == träkista:
+            item = random.randint(1, 100)
+            if item == 1:
+                item = 6
+            elif item == 2:
+                item = 5
+            elif item => 3 and <= 17:
+                item = 4
+            elif item => 18 and <= 32:
+                item = 3
+            elif item => 33 and <= 64:
+                item = 2
+            elif item => 65 and <= 100:
+                item = 1
+            self.item = item
+            self.expdrop = 2
+
+        elif chesttype == guldkista:
+            item = random.randint(1, 100)
+            if item == 1:
+                item = 1
+            elif item == 2:
+                item = 2
+            elif item => 3 and <= 17:
+                item = 3
+            elif item => 18 and <= 32:
+                item = 4
+            elif item => 33 and <= 64:
+                item = 5
+            elif item => 65 and <= 100:
+                item = 6
+            self.item = item
+            self.expdrop = 5
+           
+class item():
+    def __init__(self, itemtype, strengthmod, defensemod):
+        self.type = itemtype
