@@ -24,7 +24,7 @@ def level_up():
         if exp > 20 + 0.2 * level:
             exp -= 20 + 0.2 * level
         print("Du är nu level", level, ".\n")
-        hp = 5 + 2 * level
+        hp = 5 + 2 * level + 0.5 * försvar
         player.health = int(hp)
         attack = 2 + 1 * strength_bonus
         player.attack = int(attack)
@@ -224,9 +224,8 @@ while poäng > 0:
     poäng = poäng - försvarspoäng
     print("Styrka", styrka, "försvar", försvar, "poäng", poäng)
 
-#spelarens hp deklareras och det sätts på player.
+#spelarens hp deklareras.
 hp = 5 + 2*level + 0.5 * försvar
-player.health = hp
 player = Player(Karaktär)
 
 #fortsatt utskrivt, samma som sist.
@@ -339,5 +338,5 @@ while level < 10:
             exit()
         rumsnummer += 1
 
-#När spelarren når nivå 10 har den vunnit och detta printas.     
+#När spelarren når nivå 10 har den vunnit och detta printas.
 print("Grattis! Du nådde level 10 och klarade spelet! Med din hjälp återhämtar sig det som fanns kvar av byn.")
