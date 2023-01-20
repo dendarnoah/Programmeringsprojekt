@@ -3,8 +3,8 @@ import time
 level = 1
 exp = 0
 strength_bonus = 0
-hp = round(5 + 2*level)
-attack = round(2 + 1*strength_bonus)
+hp = 5 + 2*level
+attack = 2 + 1*strength_bonus
 
 
 class Player():
@@ -15,16 +15,18 @@ class Player():
         self.exp = exp
         self.attack = attack
 
-    def exp(self):
-        self.exp + expdrop
-        while exp >= 20 + 0.2*level:
-            level += 1
-            hp = 5 + 2 * level
-            attack = 2 + 1 * strength_bonus
-            if exp > 20 + 0.2*level:
-                exp -= 20 + 0.2*level
-            print("Du är nu level", level,".")
-
+def level_up():
+    global level, exp, strength_bonus
+    while exp >= 20 + 0.2 * level:
+        level += 1
+        player.level = level
+        if exp > 20 + 0.2 * level:
+            exp -= 20 + 0.2 * level
+        print("Du är nu level", level, ".\n")
+        hp = 5 + 2 * level
+        player.health = int(hp)
+        attack = 2 + 1 * strength_bonus
+        player.attack = int(attack)
 
 class Monster():
     def __init__(self, monstertype):
@@ -137,23 +139,28 @@ def add_item(item):
     else:
         print("Väskan är full.")
         print("Vill du byta ut ett föremål? (ja/nej)")
-        choice = input()
         while True:
+            choice = input()
             if choice == "ja":
                 for i, inv_item in enumerate(inventory):
                     print(f"{i+1}. {inv_item}")
                 while True:
-                    print("Skriv numret på föremålet du vill byta ut.")
+                    print("Skriv numret på föremålet du vill byta ut, eller 10 för att avbryta.")
                     replace_index = int(input()) - 1
+                    if replace_index == 9:
+                        break
                     if replace_index >= 0 and replace_index < len(inventory):
                         break
                     else:
                         print("Du valde ett ogiltigt nummer, försök igen.")
-                replaced_item = inventory[replace_index]
-                strength_bonus -= replaced_item.strengthmod
-                inventory[replace_index] = item
-                strength_bonus += item.strengthmod
-                break
+                if replace_index == 9:
+                    continue
+                else:
+                    replaced_item = inventory[replace_index]
+                    strength_bonus -= replaced_item.strengthmod
+                    inventory[replace_index] = item
+                    strength_bonus += item.strengthmod
+                    break
             elif choice == "nej":
                 print("Du lämnade föremålet.")
                 break
@@ -161,12 +168,9 @@ def add_item(item):
                 print("Ogiltigt svar, försök igen.")
 
 
-# View the contents of the inventory
 def show_inventory():
     for i, item in enumerate(inventory):
         print(f"{i+1}. {item}")
-
-#monster = Monster(1)
 
 
 sentence = "Du är en vilsen äventyrare som kommit långt hemifrån."
@@ -215,15 +219,15 @@ for char in sentence:
     time.sleep(0.02)
 
 rumsnummer = 0
-while level <=10:
+while level < 10:
 
     while rumsnummer >= 1:
         choice = input("Du kan välja mellan att visa:\n1. inventory\n 2. spelare\n 3. fortsätt\n")
         if choice == "1" or choice.lower() == "inventory":
             show_inventory()
         elif choice == "2" or choice.lower() == "spelare":
-            print(round(player.health))
-            print(player.level,"\n")
+            print("Du har", player.health,"hp")
+            print("Du är level",player.level,"\n")
         elif choice == "3" or choice.lower() == "fortsätt":
             break
         else:
@@ -242,7 +246,7 @@ while level <=10:
       print("Du valde stig 3")
 
     else:
-        while not 1 <= int(door) <= 3:
+        while not door == 1 or door == 2 or door == 3:
             print("Du valde en stig som inte finns, du gick in i väggen")
             points = 1
             print("Du tog en skada, försök igen")
@@ -265,22 +269,17 @@ while level <=10:
                 player.health -= monster.attack
                 print("Monstret attackerade dig och gjorde", monster.attack, "skada.")
                 print("Du har nu", player.health, "hp.")
+                if int(player.health) <= 0:
+                    print("Du förblödde och dog.")
+                    print("GAME OVER!")
+                    exit()
                 print("Det är nu din tur att attackera monstret igen.")
-            if player.health <= 0:
-                print("Du dog.")
-                print("GAME OVER!")
-                exit()
 
         print("Du dödade monstret och fick", monster.expdrop, "exp.")
         exp = exp + monster.expdrop
         rumsnummer += 1
-        while exp >= 20 + 0.2*level:
-            level += 1
-            hp = 5 + 2 * level
-            attack = 2 + 1 * strength_bonus
-            if exp > 20 + 0.2*level:
-                exp -= 20 + 0.2*level
-            print("Du är nu level", level,".\n")
+        level_up()
+
 
     if 34 <= chans <= 66:
         random_chesttype = random.randint(1,10)
@@ -292,22 +291,21 @@ while level <=10:
             print("Du vandrar vidare längs stigen och hittar en träkista.")
         chest = Chest(chesttype)
         föremål1 = Item(chest.item)
+        print("Du hittade ", föremål1,".")
         add_item(föremål1)
-        print("Du hittade ", föremål1, "Du känner någon form av magisk aura som gör dig starkare från föremålet.\nDu lägger föremålet i väskan.\n")
         exp = exp + chest.expdrop
-        while exp >= 20 + 0.2*level:
-            level += 1
-            hp = 5 + 2 * level
-            attack = 2 + 1 * strength_bonus
-            if exp > 20 + 0.2*level:
-                exp -= 20 + 0.2*level
-            print("Du är nu level", level,".\n")
+        level_up()
         rumsnummer += 1
 
     if 67 <= chans <= 100:
         print("Du klev i en fälla och tog 1 skada!")
         player.health -= 1
         print("Ditt hp är nu", player.health,".\n")
+        if int(player.health) <= 0:
+            print("Du förblödde och dog.")
+            print("GAME OVER!")
+            exit()
         rumsnummer += 1
 
         
+print("Grattis! Du nådde level 10 och klarade spelet! Med din hjälp återhämtar sig det som fanns kvar av byn.")
