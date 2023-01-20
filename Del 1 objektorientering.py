@@ -194,7 +194,12 @@ försvar = 0
 print("Du har 10 poäng att spendera")
 
 while poäng > 0:
-    styrkepoäng = int(input("Välj din styrka ->"))
+    while True:
+        try:
+            styrkepoäng = int(input("Välj din styrka ->"))
+            break
+        except ValueError:
+            print("Du valde ett ogiltigt svar, försök igen.")
     while poäng - styrkepoäng < 0 or styrkepoäng < 0:
         print("Du valde ett för högt nummer eller ett negativt nummer, vänligen välj ett nummer mellan 0 och ",poäng)
         styrkepoäng = int(input("Välj din styrka ->"))
@@ -204,7 +209,12 @@ while poäng > 0:
     försvarspoäng = int(input("Välj ditt försvar ->"))
     while poäng - försvarspoäng < 0 or försvarspoäng < 0:
         print("Du valde ett för högt nummer eller ett negativt nummer, vänligen välj ett nummer mellan 0 och ",poäng)
-        försvarspoäng = int(input("Välj ditt försvar ->"))
+        while True:
+            try:
+                försvarspoäng = int(input("Välj ditt försvar ->"))
+                break
+            except ValueError:
+                print("Du valde ett ogiltigt svar, försök igen.")
     försvar += försvarspoäng
     poäng = poäng - försvarspoäng
     print("Styrka", styrka, "försvar", försvar, "poäng", poäng)
@@ -234,23 +244,33 @@ while level < 10:
             print("Du valde ett ogiltigt alternativ, välj igen.")
 
     print("\nVälj stig mellan: 1, 2, eller 3?\n")
-    door = int(input())
-
-    if door == 1:
-      print("Du valde stig 1")
-
-    elif door == 2:
-      print("Du valde stig 2")
-
-    elif door == 3:
-      print("Du valde stig 3")
-
-    else:
-        while not door == 1 or door == 2 or door == 3:
+    while True:
+        try:
+            door = int(input())
+            break
+        except ValueError:
             print("Du valde en stig som inte finns, du gick in i väggen")
             points = 1
             print("Du tog en skada, försök igen")
-            door = input("Välj stig mellan: 1, 2, eller 3")
+    while True:
+        if door == 1:
+            print("Du valde stig 1")
+            break
+
+        elif door == 2:
+            print("Du valde stig 2")
+            break
+
+        elif door == 3:
+            print("Du valde stig 3")
+            break
+
+        else:
+            while not door == 1 or door == 2 or door == 3:
+                print("Du valde en stig som inte finns, du gick in i väggen")
+                points = 1
+                print("Du tog en skada, försök igen")
+                door = input("Välj stig mellan: 1, 2, eller 3")
 
 
     chans = random.randint(1,100)
